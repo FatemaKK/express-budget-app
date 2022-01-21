@@ -10,11 +10,11 @@ transactions.get("/", (_, response) => {
 });
 
 transactions.get("/:id", (request, response) => {
-  const { index } = request.params;
-  if (!transactionsArr[index]) {
+  const { id } = request.params;
+  if (!transactionsArr[id]) {
     response.status(404).json({ error: "Transaction not found" });
   } else {
-    response.status(200).json(transactionsArr[index]);
+    response.status(200).json(transactionsArr[id]);
   }
 });
 
@@ -24,9 +24,9 @@ transactions.post("/", (request, response) => {
 });
 
 transactions.delete("/:id", (request, response) => {
-  const { index } = request.params;
+  const { id } = request.params;
   if (!transactionsArr[index]) {
-    const [deleteTransaction] = transactionsArr.splice(index, i);
+    const [deleteTransaction] = transactionsArr.splice(id, i);
     response.status(200).json(deleteTransaction);
   } else {
     response.status(404);
@@ -34,7 +34,7 @@ transactions.delete("/:id", (request, response) => {
 });
 
 transactions.put("/:id", (request, response) => {
-  transactionsArr.splice(request.params.index, 1, request.body);
+  transactionsArr.splice(request.params.id, 1, request.body);
   response.status(200).json(transactionsArr);
 });
 
