@@ -4,11 +4,11 @@ const transactionsArr = require("../models/transaction");
 
 const transactions = express.Router();
 
-
 transactions.get("/", (_, response) => {
   response.json(transactionsArr);
 });
 
+// GET
 transactions.get("/:id", (request, response) => {
   const { id } = request.params;
   if (!transactionsArr[id]) {
@@ -18,24 +18,32 @@ transactions.get("/:id", (request, response) => {
   }
 });
 
+// POST
 transactions.post("/", (request, response) => {
   transactionsArr.push(request.body);
   response.status(201).json(transactionsArr);
 });
 
+// DELETE
 transactions.delete("/:id", (request, response) => {
   const { id } = request.params;
-  if (!transactionsArr[index]) {
-    const [deleteTransaction] = transactionsArr.splice(id, i);
+  if (transactionsArr[id]) {
+    const deleteTransaction = transactionsArr.splice(id, 1);
     response.status(200).json(deleteTransaction);
   } else {
     response.status(404);
   }
 });
 
+// PUT
 transactions.put("/:id", (request, response) => {
-  transactionsArr.splice(request.params.id, 1, request.body);
-  response.status(200).json(transactionsArr);
+  const { id } = request.params;
+  if (transactionsArr[id]) {
+    transactionsArr[id] = request.body;
+    response.status(200).json(transactionsArr[id]);
+  } else {
+    response.status(404).json({ error: "Not Found" });
+  }
 });
 
 module.exports = transactions;
